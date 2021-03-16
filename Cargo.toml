@@ -1,8 +1,8 @@
 [package]
-name = "lucifer"
+name = "ho"
 version = "0.1.0"
 authors = ["rik"]
-repository = "https://github.com/KingInktvis/lucifer"
+repository = "https://github.com/yuulive/ho"
 readme = "README.md"
 license = "MIT"
 description = "Web server library."

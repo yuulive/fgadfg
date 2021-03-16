@@ -1,11 +1,11 @@
-# lucifer
-Lucifer is a web server library.
-Lucifer comes with its own http implementation. 
+# ho
+ho is a web server library.
+ho comes with its own http implementation. 
 Furthermore it comes with routing and the possibility to add middleware.
 
 ## Getting started ##
-First you have to add lucifer as an dependency to the project you want to use it in.
-Now add lucifer to your file.`extern crate lucifer;`
+First you have to add ho as an dependency to the project you want to use it in.
+Now add ho to your file.`extern crate ho;`
 
 Functions you want to add to routes do need to have the signature
 ```rust
@@ -15,14 +15,14 @@ When starting the server it requires a RouteHandler and a MiddleWareStore.
 Lets first forget about the MiddlewareStore. The RouteHandler is a object to which you add the routes you want the server to listen for.
 A root route can be added and listened to by the the server like this.
 ```rust
-extern crate lucifer;
+extern crate ho;
 
-use lucifer::http::*;
-use lucifer::router::*;
-use lucifer::middleware::*;
+use ho::http::*;
+use ho::router::*;
+use ho::middleware::*;
 
 fn main() {
-    let mut server = lucifer::Server::new();
+    let mut server = ho::Server::new();
     let mut router = RouteHanlder::new();
     router.add(Method::GET, "/", root_function);
     server.listen("127.0.0.1:8000", router, MiddlewareStore::new())
@@ -53,16 +53,16 @@ Besides single variables the remainder of a route can also be made variable. Thi
 #### Example of the static route ####
 In this example the `/static/` route will serve files requested or return a 404 error.
 ```rust
-extern crate lucifer;
+extern crate ho;
 
-use lucifer::http::*;
-use lucifer::router::*;
-use lucifer::middleware::*;
+use ho::http::*;
+use ho::router::*;
+use ho::middleware::*;
 use std::fs::File;
 use std::io::prelude::*;
 
 fn main() {
-    let mut server = lucifer::Server::new();
+    let mut server = ho::Server::new();
     let mut routes = RouteHandler::new();
     routes.add_route(Method::GET, "/static/*", static_content);
     server.listen("127.0.0.1:8000", routes, MiddlewareStore::new());
@@ -107,7 +107,7 @@ Lastly the router also adds a given fragment to the args. The fragment is added 
 To use middleware in the application the middleware has to be added to a instance of `middlware::MiddlewareStore` which you pass to `Server.listen()` as third argument.
 
 ### Creating middleware ###
-To make middleware for lucifer the middleware needs to implement the traits `middleware::Middleware`, `Sync` and `Send`.
+To make middleware for ho the middleware needs to implement the traits `middleware::Middleware`, `Sync` and `Send`.
 The Middleware trait requires the method call to be implemented with the following signature.
 ```rust
 fn call(&self, req: Request, args: Args, handle: &mut MiddlewareHandle) -> Response
@@ -116,13 +116,13 @@ The middleware can access the same arguments that will be passed down to the fun
 The difference between the middleware call and the route function is the extra argument MiddlewareHandle. This handle has a function named next which has to be called to continue executing the remaining middleware and the route specific function.
 A empty middleware that does nothing but pass on the request looks like the following.
 ```rust
-extern crate lucifer;
+extern crate ho;
 
-use lucifer::middleware::*;
+use ho::middleware::*;
 
 pub struct Nothing {}
 
-impl lucifer::middleware::Middleware for Nothing {
+impl ho::middleware::Middleware for Nothing {
     fn call(&self, req: Request, args: Args, handle: &mut MiddlewareHandle) -> Response {
         handle.next(req, args)
     }

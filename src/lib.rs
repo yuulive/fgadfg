@@ -1,6 +1,6 @@
-//! # Lucifer
+//! # Ho
 //!
-//! Lucifer is a library for creating web servers.
+//! Ho is a library for creating web servers.
 //! It contains its own http implementation routing and middleware.
 //!
 pub mod http;
